@@ -14,7 +14,11 @@
     'author': "Alfant Projects",
     'website': "alfatihridhont@gmail.com",
     'category': 'Sale,Invoicing',
-    'version': '0.1',
+    'license': 'OPL-1',
+    'price' : '40',
+    'currency' : 'EUR',
+    'version' : '11.0.1',
+    'support' : 'alfatihridhont@gmail.com',
     'depends': ['base','sale_management'],
     'data': [
         'views/views.xml',
