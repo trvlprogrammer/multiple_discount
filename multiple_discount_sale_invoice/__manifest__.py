@@ -6,13 +6,14 @@
         Multiple discount in sale and invoicing""",
 
     'description': """
+        Thank you for buying this module.
         This module inherit sale and account to add new feature called multiple discount.
         If you need customization odoo you can email me at alfatihridhont@gmail.com
     """,
 
     'author': "Alfant Projects",
     'website': "alfatihridhont@gmail.com",
-    'category': 'Accounting',
+    'category': 'Sale,Invoicing',
     'version': '0.1',
     'depends': ['base','sale_management'],
     'data': [
