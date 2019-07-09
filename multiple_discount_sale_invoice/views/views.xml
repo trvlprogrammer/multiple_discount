@@ -1,0 +1,117 @@
+<odoo>
+	<data>
+		 
+		<record model="ir.ui.view" id="discount_discount_form_view">
+			<field name="name">discount.discount.form</field>
+			<field name="model">discount.discount</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Discount">
+					<sheet>
+						<group>
+							<field name="name" required="True" />
+							<field name="amount" required="True" />
+							<field name="discount_type" required="True" />
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+		<record model="ir.ui.view" id="discount_discount_tree_view">
+			<field name="name">discount.discount.tree</field>
+			<field name="model">discount.discount</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Discount">
+					<field name="name" />
+					<field name="amount" />
+					<field name="discount_type" />
+				</tree>
+			</field>
+		</record>
+
+
+		<record id="discount_discount_search_view" model="ir.ui.view">
+			<field name="name">discount.discount.search</field>
+			<field name="model">discount.discount</field>
+			<field name="arch" type="xml">
+				<search string="Search">
+					<group expand="0" string="Group By...">
+						<filter string="Discount Type"
+							context="{'group_by':'discount_type'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+
+		<record id="action_discount_discount"
+			model="ir.actions.act_window">
+			<field name="name">Discounts</field>
+			<field name="res_model">discount.discount</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="search_view_id"
+				ref="discount_discount_search_view" />
+			<field name="context">{}</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Create a discount here
+				</p>
+			</field>
+		</record>
+
+
+		<record id="sale_order_line_onherited123" model="ir.ui.view">
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.view_order_form" />
+			<field name="arch" type="xml">
+				<xpath
+					expr="//field[@name='order_line']/tree//field[@name='discount']"
+					position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+				<xpath
+					expr="//field[@name='order_line']/tree//field[@name='price_unit']"
+					position="after">
+					<field name='type' groups="sale.group_discount_per_so_line"
+						string="Discount Type" />
+					<field name='multiple_discounts'
+						domain="[('discount_type','=',type)]" string="Discount"
+						widget='many2many_tags' groups="sale.group_discount_per_so_line" options="{'no_create': True}"/>
+				</xpath>
+			</field>
+		</record>
+
+
+		<record id="invoice_form_inherit" model="ir.ui.view">
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_form" />
+			<field name="arch" type="xml">
+				<xpath
+					expr="//field[@name='invoice_line_ids']/tree//field[@name='discount']"
+					position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+				<xpath
+					expr="//notebook/page/field[@name='invoice_line_ids']/tree//field[@name='price_unit']"
+					position="after">
+					<field name='type' groups="sale.group_discount_per_so_line"
+						string="Discount Type" />
+					<field name="multiple_discounts" string="Discount"
+						domain="[('discount_type','=',type)]" widget="many2many_tags" options="{'no_create': True}"/>
+				</xpath>
+			</field>
+		</record>
+
+
+		<menuitem id="discount_config1" name="Discount Configuration"
+			parent="sale.menu_sale_config" action="action_discount_discount" />
+		<menuitem id="discount_invoice_config1"
+			name="Discount Configuration"
+			parent="account.menu_finance_configuration"
+			action="action_discount_discount" />
+	</data>
+</odoo>

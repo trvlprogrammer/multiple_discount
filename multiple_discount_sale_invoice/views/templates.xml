@@ -1,0 +1,62 @@
+<odoo>
+	<data>
+		<template id="report_quotation_inherit_321"
+			inherit_id="sale.report_saleorder_document">
+			<xpath
+				expr="//table[@class='table table-condensed']//thead//tr//th[3]"
+				position="after">
+				<th class="text-right">Discount(Fix Amount)</th>
+				<th class="text-right">Discount(%)</th>
+			</xpath>
+			<xpath expr="//tbody[@class='sale_tbody']//tr//td[3]"
+				position="after">
+				<td class="text-right">
+					<t t-foreach = "l.multiple_discounts" t-as="disc">
+						<t t-if="disc.discount_type == 'fix_amount'">
+							<t t-if="l.multiple_discounts[0] != disc"> + </t>
+							<span t-field="disc.amount"/>
+						</t>
+					</t>
+				</td>
+				<td class="text-right">
+					<t t-foreach = "l.multiple_discounts" t-as="disc">
+						<t t-if="disc.discount_type == 'percentage'">
+							<t t-if="l.multiple_discounts[0] != disc"> + </t>
+							<span t-field="disc.amount"/>
+						</t>
+					</t>
+				</td>
+			</xpath>
+		</template>
+		
+		<template id="report_account_invoice_inherit_321"
+			inherit_id="account.report_invoice_document">
+			<xpath
+				expr="//table[@class='table table-condensed']//thead//tr//th[3]"
+				position="after">
+				<th class="text-right">Discount(Fix Amount)</th>
+				<th class="text-right">Discount(%)</th>
+			</xpath>
+			<xpath expr="//tbody[@class='invoice_tbody']//tr//td[3]"
+				position="after">
+				<td class="text-right">
+					<t t-foreach = "l.multiple_discounts" t-as="disc">
+						<t t-if="disc.discount_type == 'fix_amount'">
+							<t t-if="l.multiple_discounts[0] != disc"> + </t>
+							<span t-field="disc.amount"/>
+						</t>
+					</t>
+				</td>
+				<td class="text-right">
+					<t t-foreach = "l.multiple_discounts" t-as="disc">
+						<t t-if="disc.discount_type == 'percentage'">
+							<t t-if="l.multiple_discounts[0] != disc"> + </t>
+							<span t-field="disc.amount"/>
+						</t>
+					</t>
+				</td>
+			</xpath>
+		</template>
+		
+	</data>
+</odoo>
