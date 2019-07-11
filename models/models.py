@@ -7,7 +7,7 @@ class discountDiscount(models.Model):
     
     name            = fields.Char(string = 'Discount Name')
     amount          = fields.Float(string = 'Discount amount')
-    discount_type   = fields.Selection([('fix_amount','Fix Amount'),('percentage','Percentage')],string = 'Discount Type')
+    discount_type   = fields.Selection([('fixed_amount','Fixed Amount'),('percentage','Percentage')],string = 'Discount Type')
     
     
     @api.model
@@ -29,7 +29,7 @@ class saleOrderLine(models.Model):
     _inherit        = 'sale.order.line'
     
     multiple_discounts  = fields.Many2many('discount.discount','discount_sales_rel','order_id','discount_id', string = 'Discounts')
-    type                = fields.Selection([('fix_amount','Fix Amount'),('percentage','Percentage')],string = 'Type')
+    type                = fields.Selection([('fixed_amount','Fixed Amount'),('percentage','Percentage')],string = 'Type')
      
     @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id', 'multiple_discounts','type')
     def _compute_amount(self):
@@ -43,7 +43,7 @@ class saleOrderLine(models.Model):
                 if line.type == 'percentage' :
                    for discount in discounts :                         
                        price = price * (1 - (discount.amount) / 100.0)
-                elif line.type == 'fix_amount' :
+                elif line.type == 'fixed_amount' :
                     for discount in discounts :                         
                        price = price - discount.amount
             taxes = line.tax_id.compute_all(price, line.order_id.currency_id, line.product_uom_qty, product=line.product_id, partner=line.order_id.partner_shipping_id)
@@ -84,7 +84,7 @@ class AccountInvoiceLine(models.Model):
     _inherit            = "account.invoice.line"
     
     multiple_discounts  = fields.Many2many('discount.discount','discount_invoice_rel','invoice_id','discount_id', string = 'Discounts')
-    type                = fields.Selection([('fix_amount','Fix Amount'),('percentage','Percentage')],string = 'Type')
+    type                = fields.Selection([('fixed_amount','Fixed Amount'),('percentage','Percentage')],string = 'Type')
 
         
     @api.model 
@@ -123,7 +123,7 @@ class AccountInvoiceLine(models.Model):
                    for discount in discounts :                         
                        price = price * (1 - (discount.amount) / 100.0)
                        
-                elif line.type == 'fix_amount' :
+                elif line.type == 'fixed_amount' :
                     for discount in discounts :                         
                        price = price - discount.amount        
         taxes = False
@@ -152,7 +152,7 @@ class AccountInvoiceInherit(models.Model):
                 if line.type == 'percentage' :
                    for discount in discounts :                         
                        price_unit = price_unit * (1 - (discount.amount) / 100.0)                       
-                elif line.type == 'fix_amount' :
+                elif line.type == 'fixed_amount' :
                     for discount in discounts :                         
                        price_unit = price_unit - discount.amount
             taxes = line.invoice_line_tax_ids.compute_all(price_unit, self.currency_id, line.quantity, line.product_id, self.partner_id)['taxes']
@@ -184,7 +184,7 @@ class SaleOrderInherit(models.Model):
                 if line.type == 'percentage' :
                    for discount in discounts :                         
                        price_reduce = price_reduce * (1 - (discount.amount) / 100.0)                       
-                elif line.type == 'fix_amount' :
+                elif line.type == 'fixed_amount' :
                     for discount in discounts :                         
                        price_reduce = price_reduce - discount.amount
             taxes = line.tax_id.compute_all(price_reduce, quantity=line.product_uom_qty, product=line.product_id, partner=self.partner_shipping_id)['taxes']

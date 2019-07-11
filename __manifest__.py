@@ -11,9 +11,9 @@
         If you need customization odoo you can email me at alfatihridhont@gmail.com
     """,
 
-    'author': "Alfant Projects",
+    'author': "Alfatih Ridho NT",
     'website': "alfatihridhont@gmail.com",
-    'category': 'Sale,Invoicing',
+    'category': 'Sale',
     'license': 'OPL-1',
     'price' : '40',
     'currency' : 'EUR',
